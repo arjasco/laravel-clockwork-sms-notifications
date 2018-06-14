@@ -1,6 +1,6 @@
 # Laravel Clockwork SMS Notifications
 
-This package provides  the ability to use [Clockwork SMS](https://wwww.clockworksms.com) for Laravel notifications.
+This package extends the laravel notification system to add the UK based [Clockwork SMS](https://wwww.clockworksms.com) as an additional delivery method.
 
 ## Installation
 
@@ -8,12 +8,20 @@ Install with composer:
 
     composer require arjasco/laravel-clockwork-sms-notifications
 
-Add the service provider to your configuration
+Add the service provider to your `app.php` configuration
 
 ```php
 'providers' => [
     ...
     Arjasco\ClockworkSms\ClockworkSmsServiceProvider::class,
+],
+```
+
+Add your API Key options to your `services.php` 
+
+```php
+'clockwork-sms' => [
+    'key' => env('CLOCKWORK_SMS_KEY')
 ],
 ```
 
@@ -62,10 +70,10 @@ Finally, personalise the message that should be sent
  public function toClockworkSms($notifiable)
  {
      return sprintf(
-         "Hello %s, Your activation code is: %s",
-         $notifiable->name,
-         $notifiable->activation_code
-     );
+       "Hello %s, Your activation code is: %s",
+       $notifiable->name,
+       $notifiable->activation_code
+   );
  }
 ```
 
