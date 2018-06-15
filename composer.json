@@ -1,6 +1,5 @@
 {
     "name": "arjasco/laravel-clockwork-sms-notifications",
-    "version": "1.0.0",
     "description": "A Laravel notification package for Clockwork SMS",
     "type": "library",
     "license": "MIT",
