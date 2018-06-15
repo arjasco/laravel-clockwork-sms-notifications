@@ -57,8 +57,9 @@ Within your notification class use `clockwork-sms` as one of the delivery channe
  }
 ```
 
-Finally, personalise the message that should be sent
-*If you wish, you can also return an object that implements the* `__toString()`.
+Finally, personalise the message that should be sent.
+
+*If you wish, you can also return an object that implements the* `__toString()` magic method.
 
 ```php
  /**
@@ -70,10 +71,10 @@ Finally, personalise the message that should be sent
  public function toClockworkSms($notifiable)
  {
      return sprintf(
-       "Hello %s, Your activation code is: %s",
-       $notifiable->name,
-       $notifiable->activation_code
-   );
+         "Hello %s, Your activation code is: %s",
+         $notifiable->name,
+         $notifiable->activation_code
+     );
  }
 ```
 
