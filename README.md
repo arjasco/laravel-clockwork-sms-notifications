@@ -1,5 +1,7 @@
 # Laravel Clockwork SMS Notifications
 
+[![Build Status](https://travis-ci.org/arjasco/laravel-clockwork-sms-notifications.svg?branch=master)](https://travis-ci.org/arjasco/laravel-clockwork-sms-notifications)
+
 This package extends the laravel notification system to add the UK based [Clockwork SMS](https://wwww.clockworksms.com) as an additional delivery method.
 
 ## Installation
