@@ -16,5 +16,10 @@
     },
     "require": {
         "mediaburst/clockworksms": "2.0.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.2",
+        "mockery/mockery": "^1.1",
+        "illuminate/notifications": "^5.6"
     }
 }
