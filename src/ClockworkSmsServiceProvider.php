@@ -19,7 +19,8 @@ class ClockworkSMSServiceProvider extends ServiceProvider
 
         $manager->extend('clockwork-sms', function () {
             return new ClockworkSmsChannel(
-                new Clockwork($this->app['config']['services.clockwork-sms.key'])
+                new Clockwork($this->app['config']['services.clockwork-sms.key']),
+                $this->app['config']['services.clockwork-sms.from']
             );
         });
     }
