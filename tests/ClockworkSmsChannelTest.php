@@ -1,6 +1,7 @@
 <?php
 
 use Arjasco\ClockworkSms\ClockworkSmsChannel;
+use Arjasco\ClockworkSms\ClockworkSmsMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Notifiable;
 use mediaburst\ClockworkSMS\Clockwork;
@@ -17,15 +18,18 @@ class ClockworkSmsChannelTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testThatWeCanSendAnSmsMessage()
+    public function testThatWeCanSendAnSmsMessageWithADefaultFromNumber()
     {
         $channel = new ClockworkSmsChannel(
-            $clockwork = m::mock(Clockwork::class)
+            $clockwork = m::mock(Clockwork::class),
+            'Test'
         );
 
         $clockwork->shouldReceive('send')->once()->with([
             'to' => '123456789',
-            'message' => 'Testing sms sending'
+            'from' => 'Test',
+            'message' => 'Testing sms sending',
+            'long' => false
         ]);
 
         $channel->send(new ClockworkTestNotifiable, new ClockworkTestNotification);
@@ -34,10 +38,31 @@ class ClockworkSmsChannelTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
+    public function testThatWeCanSendAnSmsMessageWithAMessageInstance()
+    {
+        $channel = new ClockworkSmsChannel(
+            $clockwork = m::mock(Clockwork::class),
+            'Test'
+        );
+
+        $clockwork->shouldReceive('send')->once()->with([
+            'to' => '123456789',
+            'from' => '111222333444',
+            'message' => 'Test content',
+            'long' => true
+        ]);
+
+        $channel->send(new ClockworkTestNotifiable, new ClockworkTestNotificationWithMessage);
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testThatWeDoNothingIfNoRouteIsProvided()
     {
         $channel = new ClockworkSmsChannel(
-            $clockwork = m::mock(Clockwork::class)
+            $clockwork = m::mock(Clockwork::class),
+            'Test'
         );
 
         $clockwork->shouldNotReceive('send');
@@ -50,6 +75,16 @@ class ClockworkTestNotification extends Notification {
     public function toClockworkSms($notifiable)
     {
         return 'Testing sms sending';
+    }
+}
+
+class ClockworkTestNotificationWithMessage extends Notification {
+    public function toClockworkSms($notifiable)
+    {
+        return (new ClockworkSmsMessage)
+                    ->from('111222333444')
+                    ->content('Test content')
+                    ->long();
     }
 }
 
