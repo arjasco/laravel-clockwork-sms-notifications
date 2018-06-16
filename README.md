@@ -19,11 +19,12 @@ Add the service provider to your `app.php` configuration
 ],
 ```
 
-Add your API Key options to your `services.php` 
+Add your API Key & default from number options to your `services.php` 
 
 ```php
 'clockwork-sms' => [
-    'key' => env('CLOCKWORK_SMS_KEY')
+    'key' => env('CLOCKWORK_SMS_KEY'),
+    'from' => env('CLOCKWORK_SMS_FROM')
 ],
 ```
 
@@ -59,9 +60,9 @@ Within your notification class use `clockwork-sms` as one of the delivery channe
  }
 ```
 
-Finally, personalise the message that should be sent.
+Finally, personalise the message that should be sent. Return a string or a `ClockworkSmsMessage` instance as shown below.
 
-*If you wish, you can also return an object that implements the* `__toString()` magic method.
+*Only use the long method if you intend on sending a long message that should be combined into a single message as opposed to multiple messages of 160 characters.*
 
 ```php
  /**
@@ -72,11 +73,16 @@ Finally, personalise the message that should be sent.
   */
  public function toClockworkSms($notifiable)
  {
-     return sprintf(
+     $content = sprintf(
          "Hello %s, Your activation code is: %s",
          $notifiable->name,
          $notifiable->activation_code
      );
+
+     return (new ClockworkSms)
+               ->from('Einstein')
+               ->content($content)
+               ->long(false);
  }
 ```
 
