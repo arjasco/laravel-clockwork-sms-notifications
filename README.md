@@ -79,7 +79,7 @@ Finally, personalise the message that should be sent. Return a string or a `Cloc
          $notifiable->activation_code
      );
 
-     return (new ClockworkSms)
+     return (new ClockworkSmsMessage)
                ->from('Einstein')
                ->content($content)
                ->long(false);
